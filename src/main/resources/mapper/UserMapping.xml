@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.save.dao.UserDao">
+    <select id="getUserByMassage" resultType="com.example.save.bean.User">
+        SELECT username,password,email,role,state,id FROM usr WHERE
+        username=#{username} AND password=#{password} AND state=1;
+    </select>
+    <select id="getAllUser" resultType="com.example.save.bean.User">
+        SELECT username,password,email,role,id,state FROM usr
+        <if test="username != null">
+            WHERE username LIKE #{username}
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+    <select id="getUserCounts" resultType="int">
+        SELECT count(*) FROM usr
+        <if test="username != null">
+            WHERE username LIKE #{username}
+        </if>
+    </select>
+    <update id="updateState" >
+        UPDATE usr SET state = #{state} WHERE id = #{id}
+    </update>
+
+    <insert id="addUser">
+        INSERT INTO usr
+        (username,password,email,role,state)
+        VALUE
+        (#{username},#{password},#{email},#{role},#{state})
+    </insert>
+
+    <delete id="deleteUser">
+        DELETE FROM usr WHERE id = #{id}
+    </delete>
+
+    <select id="getUpdateUser" resultType="com.example.save.bean.User">
+        SELECT * FROM usr WHERE id = #{id}
+    </select>
+
+    <update id="editUser">
+        UPDATE usr SET username = #{username}
+        email = #{email} WHERE id = #{id}
+    </update>
+</mapper>
